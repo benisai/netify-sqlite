@@ -4,6 +4,9 @@ import requests
 import subprocess
 from CONFIG import *
 
+# On Router, please run 'ln -s /tmp/dhcp.leases /www/dhcp.html'
+
+
 # Decision to generate MAC host mapping from prometheus_url
 generate_mac_mapping = "yes"  # Change to "no" if you want to skip the mapping generation
 
