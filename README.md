@@ -1,5 +1,7 @@
 # netify-sqlite
 
+This software is really alpha, it will have bugs.
+
 download repo
 
 cd into repo folder
