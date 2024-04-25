@@ -4,6 +4,8 @@ download repo
 
 cd into repo folder
 
+cd to ./server/files and unzip GeoLite2-City.mmdb.*gz
+
 sudo docker build -t netify-sqlite .
 
 sudo nano docker-compose.yml (update env vars)
