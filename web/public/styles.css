@@ -1,0 +1,154 @@
+body {
+  background-color: #333333; /* Background color for the body element */
+  color: #dfdfdf; /* Text color for the body element */
+}
+
+.content {
+  margin-left: 125px; /* Adjust the margin to create space for the sidebar */
+}
+
+table {
+  border-collapse: collapse; /* Collapse table borders */
+  width: 100%; /* Set table width to 100% */
+  white-space: nowrap; /* Prevent line wrapping in table cells */
+  overflow-x: auto; /* Enable horizontal scrolling for table overflow */
+  margin-left: 130px; /* Adjust the margin to create space for the sidebar */
+}
+
+.sidebar {
+  width: 130px; /* Width of the sidebar */
+  height: 100%; /* Height of the sidebar */
+  background-color: #222222; /* Background color of the sidebar */
+  position: fixed; /* Fixes the sidebar position */
+  left: 0; /* Position the sidebar on the left */
+  top: 0; /* Position the sidebar at the top */
+  overflow-x: hidden; /* Hide horizontal overflow content */
+  padding-top: 20px; /* Top padding for the sidebar */
+  transition: width 0.3s ease; /* Transition effect for sidebar width */
+}
+
+.sidebar ul {
+  list-style-type: none; /* Remove bullet points for list items */
+  padding: 0; /* Remove padding for the sidebar list */
+  margin: 0; /* Remove margin for the sidebar list */
+}
+
+.sidebar li {
+  margin-bottom: 10px; /* Bottom margin for list items in the sidebar */
+}
+
+.sidebar a {
+  display: block; /* Display sidebar links as block elements */
+  padding: 8px 16px; /* Padding for sidebar links */
+  text-decoration: none; /* Remove underline for sidebar links */
+  color: #dfdfdf; /* Text color for sidebar links */
+}
+
+.sidebar a:hover {
+  background-color: #444444; /* Background color when hovering over sidebar links */
+}
+
+
+/* css for menu icons */
+.menu-item {
+  transition: background-color .3s;
+  }
+  .menu-item:hover {
+  background-color: #374151;
+  }
+  .menu-item-active {
+  background-color: #111827;
+  }
+  .icon {
+  width: 20px; /* Adjust icon size */
+  height: 20px; /* Adjust icon size */
+  color: #9CA3AF; /* Icon color */
+  }
+  .icon-active {
+  color: #FFFFFF; /* Active icon color */
+  }
+
+
+#netify-table th {
+  background-color: #222222; /* Background color for table headers */
+  color: #dfdfdf; /* Text color for table headers */
+  padding: 10px; /* Padding for table headers */
+  border: 1px solid #707070; /* Border for table headers */
+}
+
+#netify-table td {
+  padding: 5px; /* Padding for table cells */
+  border: 1px solid #777777; /* Border for table cells */
+}
+
+#netify-table tr:nth-child(even) {
+  background-color: #1e2226; /* Background color for even rows */
+}
+
+#netify-table tr:nth-child(odd) {
+  background-color: #2a2f34; /* Background color for odd rows */
+}
+
+#netify-table td.timeinsert {
+  white-space: nowrap; /* Prevent line wrapping for specific table cells */
+}
+
+.dropdowns {
+  display: flex; /* Display dropdown elements as flex */
+  justify-content: flex-end; /* Align dropdown elements to the right */
+  align-items: center; /* Vertically center dropdown elements */
+  margin-bottom: 10px; /* Bottom margin for dropdown elements */
+}
+
+.dropdowns label {
+  margin-left: 10px; /* Left margin for dropdown labels */
+  color: #dfdfdf; /* Text color for dropdown labels */
+  padding-right: 5px; /* Right padding for dropdown labels */
+}
+
+.dropdowns select {
+  margin-left: 10px; /* Left margin for dropdown select elements */
+}
+
+#time-interval {
+  margin-left: 10px; /* Left margin for time interval element */
+}
+
+#refresh-button {
+  margin-left: 10px; /* Left margin for refresh button element */
+}
+
+#fqdn-search {
+  margin-right: 10px; /* Right margin for FQDN search element */
+  background-color: #222222; /* Background color for FQDN search element */
+  color: #dfdfdf; /* Text color for FQDN search element */
+  border: 1px solid #777777; /* Border for FQDN search element */
+  padding: 5px; /* Padding for FQDN search element */
+}
+
+/* New styles for the dashboard */
+.cards {
+  display: flex; /* Display cards as flex elements */
+  justify-content: space-between; /* Distribute space evenly between cards */
+  margin: 20px; /* Margin for the cards container */
+}
+
+.card {
+  background-color: #222222; /* Background color for cards */
+  color: #dfdfdf; /* Text color for cards */
+  padding: 20px; /* Padding for cards */
+  border-radius: 5px; /* Border radius for cards */
+  width: calc(25% - 20px); /* Width for individual cards */
+  box-sizing: border-box; /* Include padding and border in the total width */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Box shadow for cards */
+}
+
+.card h2 {
+  margin-top: 0; /* Top margin for card headings */
+}
+
+.card p {
+  margin-bottom: 0; /* Bottom margin for card paragraphs */
+}
+
+

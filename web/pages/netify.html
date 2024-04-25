@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netify</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">  
+</head>
+
+<body>
+  <div id="sidebar-placeholder"></div>
+
+  <div id="content">
+    <div class="dropdowns">
+      <label for="fqdn-search">Search FQDN:</label>
+      <input type="text" id="fqdn-search" />
+      <label for="hostname-filter">Hostname:</label>
+      <select id="hostname-filter">
+        <option value="">All</option>
+      </select>
+      <label for="protocol-filter">Detected Protocol:</label>
+      <select id="protocol-filter">
+        <option value="">All</option>
+      </select>
+      <label for="time-interval">Time Interval:</label>
+      <select id="time-interval">
+        <option value="1">1 mins</option>
+        <option value="5">5 mins</option>
+        <option value="15">15 mins</option>
+        <option value="30">30 mins</option>
+        <option value="60">1 hour</option>
+        <option value="360">6 hours</option>
+        <option value="720">12 hours</option>
+        <option value="1404">24 hours</option>
+        <option value="525600">1 year</option>
+      </select>
+      <button id="refresh-button">Refresh</button>
+    </div>
+
+    <table id="netify-table">
+      <thead>
+        <tr>
+          <th>Time Insert</th>
+          <th>Hostname</th>
+          <th>Local IP</th>
+          <th>FQDN</th>
+          <th>Destination IP</th>
+          <th>Destination Port</th>
+          <th>Destination Type</th>
+          <th>Detected Protocol Name</th>
+          <th>Interface</th>
+          <th>VLAN ID</th>
+          <th>Destination Country</th>
+          <th>Destination State</th>
+          <th>Destination City</th>
+          <th>Detected Protocol Name</th>
+          <th>Detected App Name</th>
+          <th>First Seen At</th>
+          <th>First Update At</th>
+          <th>Risk Score</th>
+          <th>Risk Score Client</th>
+          <th>Risk Score Server</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sidebarPlaceholder = document.querySelector('#sidebar-placeholder');
+      const fetchSidebar = () => {
+        fetch('/sidebar.html')
+          .then(response => response.text())
+          .then(html => {
+            sidebarPlaceholder.innerHTML = html;
+
+            // Add event listener to toggle the sidebar collapse
+            const sidebar = document.querySelector('.sidebar');
+            const toggleButton = document.querySelector('#sidebar-toggle-button');
+
+            toggleButton.addEventListener('click', () => {
+              sidebar.classList.toggle('collapsed');
+            });
+          })
+          .catch(error => console.error(error));
+      };
+
+      fetchSidebar();
+
+      const tableBody = document.querySelector('#netify-table tbody');
+      const hostnameFilter = document.querySelector('#hostname-filter');
+      const protocolFilter = document.querySelector('#protocol-filter');
+      const fqdnSearch = document.querySelector('#fqdn-search');
+      const timeInterval = document.querySelector('#time-interval');
+      const refreshButton = document.querySelector('#refresh-button');
+
+      refreshButton.addEventListener('click', refreshPage);
+
+      fetch('../data')
+        .then(response => response.json())
+        .then(data => {
+          // Function to filter hostnames based on activity within the selected timeframe
+          function filterHostnamesByTimeframe() {
+            const selectedInterval = parseInt(timeInterval.value); // Parse the selected interval as an integer
+            const currentTime = new Date();
+            const timeThreshold = new Date(currentTime.getTime() - selectedInterval * 60000);
+
+            // Get unique hostnames active within the selected timeframe
+            const activeHostnames = [...new Set(data.filter(row => new Date(row.timeinsert) >= timeThreshold).map(row => row.hostname))];
+            
+            // Clear existing options
+            hostnameFilter.innerHTML = '<option value="">All</option>';
+
+            // Add filtered hostnames to the dropdown
+            activeHostnames.forEach(hostname => {
+              const option = document.createElement('option');
+              option.textContent = hostname;
+              hostnameFilter.appendChild(option);
+            });
+          }
+
+          // Call the function to filter hostnames based on the selected timeframe
+          filterHostnamesByTimeframe();
+
+          // Other code...
+
+          // Function to filter table rows based on the selected filters
+          function filterTable() {
+            const selectedHostname = hostnameFilter.value;
+            const selectedProtocol = protocolFilter.value;
+            const fqdnSearchText = fqdnSearch.value.trim().toLowerCase();
+            const selectedInterval = parseInt(timeInterval.value); // Parse the selected interval as an integer
+
+            const currentTime = new Date();
+            const timeThreshold = new Date(currentTime.getTime() - selectedInterval * 60000);
+
+            const filteredData = data.filter(row => {
+              const hostnameMatch = selectedHostname === '' || row.hostname === selectedHostname;
+              const protocolMatch = selectedProtocol === '' || row.detected_protocol_name === selectedProtocol;
+              const fqdnMatch = row.fqdn.toLowerCase().includes(fqdnSearchText);
+              const timeMatch = new Date(row.timeinsert) >= timeThreshold;
+              return hostnameMatch && protocolMatch && fqdnMatch && timeMatch;
+            });
+
+            // Clear the table body
+            tableBody.innerHTML = '';
+
+            // Populate the table with the filtered data
+            filteredData.forEach(row => {
+              const tr = document.createElement('tr');
+              // Define the columns you want to display
+              const columnsToShow = [
+                'timeinsert',
+                'hostname',
+                'local_ip',
+                'fqdn',
+                'dest_ip',
+                'dest_port',
+                'dest_type',
+                'detected_protocol_name',
+                'interface',
+                'vlan_id',
+                'dest_country',
+                'dest_state',
+                'dest_city',
+                'detected_protocol_name',
+                'detected_app_name',
+                'first_seen_at',
+                'first_update_at',
+                'risk_score',
+                'risk_score_client',
+                'risk_score_server'
+              ];
+              columnsToShow.forEach(column => {
+                const td = document.createElement('td');
+                td.textContent = row[column];
+                tr.appendChild(td);
+              });
+              tableBody.appendChild(tr);
+            });
+          }
+
+          // Add event listeners to the filter dropdowns and search box
+          hostnameFilter.addEventListener('change', filterTable);
+          protocolFilter.addEventListener('change', filterTable);
+          fqdnSearch.addEventListener('input', filterTable);
+          timeInterval.addEventListener('change', () => {
+            // Call the function to filter hostnames based on the selected timeframe
+            filterHostnamesByTimeframe();
+            // Call the function to filter table rows based on the selected filters
+            filterTable();
+          });
+
+          // Initial table population
+          filterTable();
+        })
+        .catch(error => console.error(error));
+
+      function refreshPage() {
+        const selectedHostname = document.querySelector('#hostname-filter').value;
+        const selectedProtocol = document.querySelector('#protocol-filter').value;
+        const fqdnSearchText = document.querySelector('#fqdn-search').value.trim().toLowerCase();
+        const selectedInterval = document.querySelector('#time-interval').value;
+
+        // Store the selected values in localStorage
+        localStorage.setItem('selectedHostname', selectedHostname);
+        localStorage.setItem('selectedProtocol', selectedProtocol);
+        localStorage.setItem('fqdnSearch', fqdnSearchText);
+        localStorage.setItem('selectedInterval', selectedInterval);
+
+        // Reload the page
+        location.reload();
+      }
+    });
+  </script>
+</body>
+
+</html>
