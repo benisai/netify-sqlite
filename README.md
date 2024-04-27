@@ -2,17 +2,37 @@
 
 This software is really alpha, it will have bugs.
 
+## on your router, install netify agent.
+>opkg update
+
+>opkg install netifyd
+
+nano /etc/netifyd.conf and update 192.168.1.1 to whatever your router IP is. 
+
+>[socket]
+>
+>listen_path[0] = /var/run/netifyd/netifyd.sock
+>
+>listen_address[0] = 192.168.1.1
+>
+
+
+
+
+
+
+## on your linux server:
 download repo
 
-cd into repo folder
+>cd into repo folder
 
-cd to ./server/files and unzip GeoLite2-City.mmdb.*gz
+>cd to ./server/files and unzip GeoLite2-City.mmdb.*gz
 
-sudo docker build -t netify-sqlite .
+>sudo docker build -t netify-sqlite .
 
-sudo nano docker-compose.yml (update env vars)
+>sudo nano docker-compose.yml (update env vars)
 
-sudo docker-compose up -d
+>sudo docker-compose up -d
 
 <img width="1465" alt="Screenshot 2024-04-24 at 7 19 22 PM" src="https://github.com/benisai/netify-sqlite/assets/59147467/f3fda16f-2de8-490f-b2bc-0918827fe3a7">
 <img width="1465" alt="Screenshot 2024-04-24 at 7 19 22 PM" src=https://github.com/benisai/netify-sqlite/assets/59147467/559efad4-5157-4dd6-9527-642a5369ce4f">
