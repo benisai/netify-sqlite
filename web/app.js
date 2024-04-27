@@ -1,13 +1,11 @@
 // app.js
 const express = require('express');
 const app = express();
-const sqliteNetify = require('./js/sqlite-netify');
+const sqliteNetify = require('./js/netify/sqlite-netify');
 const deviceCountRoute = require('./js/clients/deviceCountRoute');
 
 // Mount the device count route
 app.use('/api', deviceCountRoute);
-
-
 
 // Connect to the SQLite database
 const db = sqliteNetify.connectToSQLite();

@@ -1,4 +1,3 @@
-// app.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
@@ -160,23 +159,6 @@ router.put('/data/by-column-value', (req, res) => {
       }
     }
   );
-});
-
-// Define the route to fetch the total number of unique devices
-router.get('/devices/count', (req, res) => {
-  const query = `
-    SELECT COUNT(DISTINCT hostname) AS deviceCount
-    FROM netify_flow
-  `;
-
-  db.get(query, (err, row) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to fetch device count from the database' });
-    } else {
-      res.json({ deviceCount: row.deviceCount });
-    }
-  });
 });
 
 module.exports = {

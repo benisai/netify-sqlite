@@ -56,7 +56,6 @@
           <th>Destination Country</th>
           <th>Destination State</th>
           <th>Destination City</th>
-          <th>Detected Protocol Name</th>
           <th>Detected App Name</th>
           <th>First Seen At</th>
           <th>First Update At</th>
@@ -104,30 +103,27 @@
       fetch('../data')
         .then(response => response.json())
         .then(data => {
-          // Function to filter hostnames based on activity within the selected timeframe
-          function filterHostnamesByTimeframe() {
-            const selectedInterval = parseInt(timeInterval.value); // Parse the selected interval as an integer
-            const currentTime = new Date();
-            const timeThreshold = new Date(currentTime.getTime() - selectedInterval * 60000);
+          const hostnames = [...new Set(data.map(row => row.hostname))];
+          hostnames.sort(); // Sort the hostname options alphabetically
+          hostnames.forEach(hostname => {
+            const option = document.createElement('option');
+            option.textContent = hostname;
+            hostnameFilter.appendChild(option);
+          });
 
-            // Get unique hostnames active within the selected timeframe
-            const activeHostnames = [...new Set(data.filter(row => new Date(row.timeinsert) >= timeThreshold).map(row => row.hostname))];
-            
-            // Clear existing options
-            hostnameFilter.innerHTML = '<option value="">All</option>';
+          const protocols = [...new Set(data.map(row => row.detected_protocol_name))];
+          protocols.sort(); // Sort the protocol options alphabetically
+          protocols.forEach(protocol => {
+            const option = document.createElement('option');
+            option.textContent = protocol;
+            protocolFilter.appendChild(option);
+          });
 
-            // Add filtered hostnames to the dropdown
-            activeHostnames.forEach(hostname => {
-              const option = document.createElement('option');
-              option.textContent = hostname;
-              hostnameFilter.appendChild(option);
-            });
-          }
-
-          // Call the function to filter hostnames based on the selected timeframe
-          filterHostnamesByTimeframe();
-
-          // Other code...
+          // Load selected values from localStorage or use default values
+          hostnameFilter.value = localStorage.getItem('selectedHostname') || '';
+          protocolFilter.value = localStorage.getItem('selectedProtocol') || '';
+          fqdnSearch.value = localStorage.getItem('fqdnSearch') || '';
+          timeInterval.value = localStorage.getItem('selectedInterval') || '5';
 
           // Function to filter table rows based on the selected filters
           function filterTable() {
@@ -168,13 +164,13 @@
                 'dest_country',
                 'dest_state',
                 'dest_city',
-                'detected_protocol_name',
                 'detected_app_name',
                 'first_seen_at',
                 'first_update_at',
                 'risk_score',
                 'risk_score_client',
                 'risk_score_server'
+
               ];
               columnsToShow.forEach(column => {
                 const td = document.createElement('td');
@@ -189,12 +185,7 @@
           hostnameFilter.addEventListener('change', filterTable);
           protocolFilter.addEventListener('change', filterTable);
           fqdnSearch.addEventListener('input', filterTable);
-          timeInterval.addEventListener('change', () => {
-            // Call the function to filter hostnames based on the selected timeframe
-            filterHostnamesByTimeframe();
-            // Call the function to filter table rows based on the selected filters
-            filterTable();
-          });
+          timeInterval.addEventListener('change', filterTable);
 
           // Initial table population
           filterTable();
