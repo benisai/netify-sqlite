@@ -13,12 +13,6 @@ services:
     environment:
       ROUTER_IP: '10.0.5.244'
       NETIFY_PORT: '7150'
-      MYSQL_HOST: '10.0.5.5'
-      MYSQL_PORT: '3306'
-      MYSQL_USER: 'netify'
-      MYSQL_PASSWORD: 'netify'
-      MYSQL_DB: 'netifyDB'
-      MYSQL_TABLE: 'netify_flow'
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
