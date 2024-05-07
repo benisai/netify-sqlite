@@ -4,6 +4,7 @@ This software is really alpha, it will have bugs.
 
 ## on your router, install netify agent.
 > On Router, please run 'ln -s /tmp/dhcp.leases /www/dhcp.html'
+
 >opkg update
 
 >opkg install netifyd
