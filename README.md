@@ -10,7 +10,7 @@ This software is really alpha, it will have bugs.
 >opkg install netifyd
 
 >nano /etc/netifyd.conf and update 192.168.1.1 to whatever your router IP is. 
-
+>
 >[socket]
 >
 >listen_path[0] = /var/run/netifyd/netifyd.sock
